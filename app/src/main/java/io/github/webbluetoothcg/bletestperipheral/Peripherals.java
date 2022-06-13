@@ -19,15 +19,24 @@ package io.github.webbluetoothcg.bletestperipheral;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.Arrays;
+import java.util.List;
+
+import io.github.webbluetoothcg.bletestperipheral.gatt.AllGattServices;
 
 
 public class Peripherals extends ListActivity {
 
-  private static final String[] PERIPHERALS_NAMES = new String[]{"Battery", "Heart Rate Monitor", "Health Thermometer"};
-  public final static String EXTRA_PERIPHERAL_INDEX = "PERIPHERAL_INDEX";
+  private static final List<String> SUPPORTED_PERIPHERALS = Arrays.asList(
+          "Battery Service", "Heart Rate", "Health Thermometer", "Weight Scale");
+  private static final String[] PERIPHERALS_NAMES = AllGattServices.getAllServices();
+  public final static String EXTRA_PERIPHERAL_SERVICE = "PERIPHERAL_SERVICE";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +53,16 @@ public class Peripherals extends ListActivity {
   protected void onListItemClick(ListView l, View v, int position, long id) {
     super.onListItemClick(l, v, position, id);
 
-    Intent intent = new Intent(this, Peripheral.class);
-    intent.putExtra(EXTRA_PERIPHERAL_INDEX, position);
-    startActivity(intent);
+    String peripheralService = PERIPHERALS_NAMES[position];
+    if (SUPPORTED_PERIPHERALS.contains(peripheralService)) {
+      Intent intent = new Intent(this, Peripheral.class);
+      intent.putExtra(EXTRA_PERIPHERAL_SERVICE, peripheralService);
+      startActivity(intent);
+    } else {
+      Toast.makeText(getApplicationContext(),
+              peripheralService + " - Service doesn't exist", Toast.LENGTH_SHORT).show();
+      Log.wtf(Peripherals.class.getCanonicalName(), peripheralService + " - Service doesn't exist");
+    }
   }
 
 }

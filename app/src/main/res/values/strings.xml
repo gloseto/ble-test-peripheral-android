@@ -40,8 +40,13 @@
 
     <!-- Battery Service -->
     <string name="batteryService_name">Battery Service</string>
-    <string name="batteryLevelTooHigh">Batter Level shouldn\'t exceed 100</string>
+    <string name="batteryLevelTooHigh">Battery Level shouldn\'t exceed 100</string>
     <string name="batteryLevelIncorrect">Please enter a number between 0 and 100</string>
+
+    <!-- Weight Scale Service -->
+    <string name="weigthScaleService_name">Weight Scale Service</string>
+    <string name="weigthScaleLevelTooHigh">Weight Scale Level shouldn\'t exceed 100</string>
+    <string name="weigthScaleLevelIncorrect">Please enter a number between 0 and 100</string>
 
     <!-- Hear Rate Service -->
     <string name="label_bodySensorLocation">Body Sensor Location</string>

@@ -255,14 +255,15 @@ public class Peripheral extends Activity implements ServiceFragmentDelegate {
 
     // If we are not being restored from a previous state then create and add the fragment.
     if (savedInstanceState == null) {
-      int peripheralIndex = getIntent().getIntExtra(Peripherals.EXTRA_PERIPHERAL_INDEX,
-          /* default */ -1);
-      if (peripheralIndex == 0) {
+      String peripheralService = getIntent().getStringExtra(Peripherals.EXTRA_PERIPHERAL_SERVICE);
+      if (peripheralService.equals("Battery Service")) {
         mCurrentServiceFragment = new BatteryServiceFragment();
-      } else if (peripheralIndex == 1) {
+      } else if (peripheralService.equals("Heart Rate")) {
         mCurrentServiceFragment = new HeartRateServiceFragment();
-      } else if (peripheralIndex == 2) {
+      } else if (peripheralService.equals("Health Thermometer")) {
         mCurrentServiceFragment = new HealthThermometerServiceFragment();
+      } else if (peripheralService.equals("Weight Scale")) {
+        mCurrentServiceFragment = new WeightScaleServiceFragment();
       } else {
         Log.wtf(TAG, "Service doesn't exist");
       }
