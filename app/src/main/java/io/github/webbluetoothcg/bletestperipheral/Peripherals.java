@@ -34,7 +34,7 @@ import io.github.webbluetoothcg.bletestperipheral.gatt.AllGattServices;
 public class Peripherals extends ListActivity {
 
   private static final List<String> SUPPORTED_PERIPHERALS = Arrays.asList(
-          "Battery Service", "Heart Rate", "Health Thermometer", "Weight Scale");
+          "Battery Service", "Heart Rate", "Health Thermometer", "Weight Scale", "Food Scale (custom)");
   private static final String[] PERIPHERALS_NAMES = AllGattServices.getAllServices();
   public final static String EXTRA_PERIPHERAL_SERVICE = "PERIPHERAL_SERVICE";
 

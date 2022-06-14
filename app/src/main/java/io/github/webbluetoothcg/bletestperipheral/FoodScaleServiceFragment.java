@@ -42,19 +42,16 @@ import io.github.webbluetoothcg.bletestperipheral.gatt.AllGattCharacteristics;
 import io.github.webbluetoothcg.bletestperipheral.gatt.AllGattServices;
 
 
-public class WeightScaleServiceFragment extends ServiceFragment {
+public class FoodScaleServiceFragment extends ServiceFragment {
 
-  private static final UUID WEIGHT_SCALE_SERVICE_UUID = AllGattServices.lookup("Weight Scale");
+  private static final UUID WEIGHT_SCALE_SERVICE_UUID = AllGattServices.lookup("Food Scale (custom)");
 
-  private static final UUID WEIGHT_MEASUREMENT_LEVEL_UUID = AllGattCharacteristics.lookup("Weight Measurement");
-  private static final UUID WEIGHT_SCALE_FEATURE_UUID = AllGattCharacteristics.lookup("Weight Scale Feature");
+  private static final UUID WEIGHT_MEASUREMENT_LEVEL_UUID = AllGattCharacteristics.lookup("Weight Measurement (custom)");
 
   private static final int INITIAL_WEIGHT_MEASUREMENT_LEVEL = 10;
   private static final int WEIGHT_MEASUREMENT_LEVEL_MAX = 100;
   private static final String WEIGHT_MEASUREMENT_LEVEL_DESCRIPTION = "This characteristic is used " +
           "to send a weight measurement.";
-  private static final String WEIGHT_SCALE_FEATURE_DESCRIPTION = "This characteristic is used " +
-          "to set weight measurement parameters.";
 
   private ServiceFragmentDelegate mDelegate;
   // UI
@@ -113,9 +110,8 @@ public class WeightScaleServiceFragment extends ServiceFragment {
   // GATT
   private BluetoothGattService mWeightScaleService;
   private BluetoothGattCharacteristic mWeightLevelCharacteristic;
-  private BluetoothGattCharacteristic mWeightScaleFeatureCharacteristic;
 
-  public WeightScaleServiceFragment() {
+  public FoodScaleServiceFragment() {
 
     mWeightLevelCharacteristic =
         new BluetoothGattCharacteristic(WEIGHT_MEASUREMENT_LEVEL_UUID,
@@ -128,21 +124,9 @@ public class WeightScaleServiceFragment extends ServiceFragment {
     mWeightLevelCharacteristic.addDescriptor(
         Peripheral.getCharacteristicUserDescriptionDescriptor(WEIGHT_MEASUREMENT_LEVEL_DESCRIPTION));
 
-    mWeightScaleFeatureCharacteristic =
-            new BluetoothGattCharacteristic(WEIGHT_SCALE_FEATURE_UUID,
-                    BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_NOTIFY,
-                    BluetoothGattCharacteristic.PERMISSION_READ);
-
-    mWeightScaleFeatureCharacteristic.addDescriptor(
-            Peripheral.getClientCharacteristicConfigurationDescriptor());
-
-    mWeightScaleFeatureCharacteristic.addDescriptor(
-            Peripheral.getCharacteristicUserDescriptionDescriptor(WEIGHT_SCALE_FEATURE_DESCRIPTION));
-
     mWeightScaleService = new BluetoothGattService(WEIGHT_SCALE_SERVICE_UUID,
         BluetoothGattService.SERVICE_TYPE_PRIMARY);
     mWeightScaleService.addCharacteristic(mWeightLevelCharacteristic);
-    mWeightScaleService.addCharacteristic(mWeightScaleFeatureCharacteristic);
   }
 
   // Lifecycle callbacks
@@ -191,57 +175,8 @@ public class WeightScaleServiceFragment extends ServiceFragment {
 
   private void setWeightLevel(int newWeightLevel, View source) {
 
-    /*
-     * Weight Scale Feature Bit String Value (32 bit)
-     * 0-9    Various Lifetime
-     *   - Time Stamp Supported (bit 0)
-     *   - Multiple Users Supported (bit 1)
-     *   - BMI Supported (bit 2)
-     *   - Weight Measurement Resolution bits (bits 3-6)
-     *   - Height Measurement Resolution bits (bits 7-9)
-     * 10-31  Reserved for Future Use Not defined.
-     * ex. 0b00111000 (timestamp unsupported; multiple users unsupported; BMI unsupported; weight resolution 0.005 kg; height measurement unsupported)
-     */
-    mWeightScaleFeatureCharacteristic.setValue(new byte[]{0b00111001, 0, 0, 0});
-
-    /*
-     * Weight Scale Measurement
-     * Flags (8bit) + Weight Measurement Value (uint16) = 3 bytes
-     *    - Measurement Units (bit 0)
-     *    - Time Stamp Present (bit 1)
-     *    - User ID Present (bit 2)
-     *    - BMI and Height Present (bit 3)
-     * [optional] Time Stamp (7 bytes)
-     *    <Field name="Year"> <Format>uint16</Format> = 2 bytes
-     *    <Field name="Month"> <Format>uint8</Format> = 1 byte
-     *    <Field name="Day"> <Format>uint8</Format> = 1 byte
-     *    <Field name="Hours"> <Format>uint8</Format> = 1 byte
-     *    <Field name="Minutes"> <Format>uint8</Format> = 1 byte
-     *    <Field name="Seconds"> <Format>uint8</Format> = 1 byte
-     */
-
-    int weight = (int) (newWeightLevel / 0.005);
-
-    mWeightLevelCharacteristic.setValue(new byte[]{0b00000010, 0, 0, 0, 0, 0, 0, 0, 0, 0});
-    mWeightLevelCharacteristic.setValue(weight,
-      BluetoothGattCharacteristic.FORMAT_UINT16, 1);
-
-    // timestamp
-    Date date = new Date();
-
-    mWeightLevelCharacteristic.setValue(date.getYear() + 1900,
-            BluetoothGattCharacteristic.FORMAT_UINT16, 3);
-    mWeightLevelCharacteristic.setValue(date.getMonth() + 1,
-            BluetoothGattCharacteristic.FORMAT_UINT8, 5);
-    mWeightLevelCharacteristic.setValue(date.getDate(),
-            BluetoothGattCharacteristic.FORMAT_UINT8, 6);
-    mWeightLevelCharacteristic.setValue(date.getHours(),
-            BluetoothGattCharacteristic.FORMAT_UINT8, 7);
-    mWeightLevelCharacteristic.setValue(date.getMinutes(),
-            BluetoothGattCharacteristic.FORMAT_UINT8, 8);
-    mWeightLevelCharacteristic.setValue(date.getSeconds(),
-            BluetoothGattCharacteristic.FORMAT_UINT8, 9);
-
+    mWeightLevelCharacteristic.setValue(newWeightLevel,
+      BluetoothGattCharacteristic.FORMAT_UINT16, 0);
 
     if (source != mWeightLevelSeekBar) {
       mWeightLevelSeekBar.setProgress(newWeightLevel);

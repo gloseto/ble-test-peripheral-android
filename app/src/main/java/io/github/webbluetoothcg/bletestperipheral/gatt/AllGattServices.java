@@ -34,6 +34,7 @@ public class AllGattServices {
         attributes.put("0000181b-0000-1000-8000-00805f9b34fb", "Body Composition");
         attributes.put("0000181c-0000-1000-8000-00805f9b34fb", "User Data");
         attributes.put("0000181d-0000-1000-8000-00805f9b34fb", "Weight Scale");
+        attributes.put("0000fff0-0000-1000-8000-00805f9b34fb", "Food Scale (custom)");
         attributes.put("0000181e-0000-1000-8000-00805f9b34fb", "Bond Management Service");
         attributes.put("0000181f-0000-1000-8000-00805f9b34fb", "Continuous Glucose Monitoring");
         attributes.put("00001820-0000-1000-8000-00805f9b34fb", "Internet Protocol Support Service");

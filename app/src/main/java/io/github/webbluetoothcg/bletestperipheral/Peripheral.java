@@ -264,6 +264,8 @@ public class Peripheral extends Activity implements ServiceFragmentDelegate {
         mCurrentServiceFragment = new HealthThermometerServiceFragment();
       } else if (peripheralService.equals("Weight Scale")) {
         mCurrentServiceFragment = new WeightScaleServiceFragment();
+      } else if (peripheralService.equals("Food Scale (custom)")) {
+        mCurrentServiceFragment = new FoodScaleServiceFragment();
       } else {
         Log.wtf(TAG, "Service doesn't exist");
       }

@@ -162,6 +162,7 @@ public class AllGattCharacteristics {
         attributes.put("00002a9c-0000-1000-8000-00805f9b34fb", "Body Composition Measurement");
         attributes.put("00002a9d-0000-1000-8000-00805f9b34fb", "Weight Measurement");
         attributes.put("00002a9e-0000-1000-8000-00805f9b34fb", "Weight Scale Feature");
+        attributes.put("0000fff1-0000-1000-8000-00805f9b34fb", "Weight Measurement (custom)");
         attributes.put("00002a9f-0000-1000-8000-00805f9b34fb", "User Control Point");
         attributes.put("00002aa0-0000-1000-8000-00805f9b34fb", "Magnetic Flux Density - 2D");
         attributes.put("00002aa1-0000-1000-8000-00805f9b34fb", "Magnetic Flux Density - 3D");
